@@ -27,8 +27,8 @@ resource "aws_internet_gateway" "igw-maria" {
 #   }
 # }
 
-resource "aws_eip_association" "name" {
-  instance_id   = aws_ec2.maria.id
+resource "aws_eip_association" "assoc-eip" {
+  instance_id   = aws_instance.ec2-maria.id
   allocation_id = data.aws_eip.id-eip.id
 }
 
@@ -47,7 +47,7 @@ resource "aws_route_table" "route-table-maria" {
 
 resource "aws_route_table_association" "assoc-table" {
   subnet_id      = aws_subnet.subnet-publica.id
-  route_table_id = aws_route_table.bar.id
+  route_table_id = aws_route_table.route-table-maria.id
 }
 
 resource "aws_subnet" "subnet-publica" {
