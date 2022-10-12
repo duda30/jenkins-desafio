@@ -1,10 +1,10 @@
 
 
 resource "aws_instance" "ec2-maria" {
-  ami                    = data.aws_ami.ubuntu
+  ami                    = data.aws_ami.ubuntu.id
   instance_type          = "t2.micro"
   subnet_id              = aws_subnet.subnet-publica.id
-  vpc_security_group_ids = aws_subnet.allow_ssh_vpn_ip_http.id
+  vpc_security_group_ids = [aws_security_group.allow_22_80_myip.id]
   key_name               = "mary-key"
 
   tags = {
