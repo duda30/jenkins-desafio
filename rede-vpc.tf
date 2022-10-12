@@ -9,7 +9,7 @@
 # }
 
 resource "aws_internet_gateway" "igw-maria" {
-  vpc_id = data.aws_vpc.id-vpc-data
+  vpc_id = data.aws_vpc.id-vpc-data.id
   tags = {
     for key, value in var.resource-tags :
     key => lower(value)
@@ -36,9 +36,10 @@ resource "aws_route_table" "route-table-maria" {
   vpc_id = data.aws_vpc.id-vpc-data.id
 
   route {
-    cidr_block = "192.168.0.0/24"
+    cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw-maria.id
   }
+
   tags = {
     for key, value in var.resource-tags :
     key => lower(value)
@@ -46,7 +47,7 @@ resource "aws_route_table" "route-table-maria" {
 }
 
 resource "aws_route_table_association" "assoc-table" {
-  subnet_id      = aws_subnet.subnet-publica.id
+  subnet_id = aws_subnet.subnet-publica.id
   route_table_id = aws_route_table.route-table-maria.id
 }
 
