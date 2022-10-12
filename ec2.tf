@@ -1,6 +1,6 @@
 
 
-resource "aws_ec2" "ec2-maria" {
+resource "aws_instance" "ec2-maria" {
   ami                    = data.aws_ami.ubuntu
   instance_type          = "t2.micro"
   subnet_id              = aws_subnet.subnet-publica.id
@@ -24,7 +24,7 @@ resource "aws_security_group" "allow_22_80_myip" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = "54.232.26.136/32"
+    cidr_blocks = ["54.232.26.136/32"]
   }
 
   egress {
@@ -36,10 +36,25 @@ resource "aws_security_group" "allow_22_80_myip" {
 
   ingress {
     description = "allow 80"
-    from_port   = [80, 8080]
-    to_port     = [80, 8080]
+    from_port   = 80
+    to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = "0.0.0.0/0"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "allow 8080"
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
