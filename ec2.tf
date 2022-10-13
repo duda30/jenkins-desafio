@@ -11,7 +11,17 @@ resource "aws_instance" "ec2-maria" {
     for key, value in var.resource-tags :
     key => lower(value)
   }
+  user_data = "${file("user-data-jenkins.sh" )}"
 }
+
+resource "aws_route53_record" "www" {
+  zone_id = data.aws_route53_zone.zona-pavan.zone_id
+  name    = "www.maria.jenkins.juliocesarpavan.com.br"
+  type    = "A"
+  ttl     = 300
+  records = ["52.14.94.77"]
+}
+
 
 
 resource "aws_security_group" "allow_22_80_myip" {
